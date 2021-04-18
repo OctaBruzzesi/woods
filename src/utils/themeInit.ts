@@ -10,6 +10,8 @@ const themeInit = () => {
     $dimension5: 32,
     $leave: "#3B8A4F",
     $primary: "#176232",
+    $secondary: "#032B35",
+    $text: "#B3B3B3",
     $wood: "#5A3D3A",
     $white: "white",
   });
