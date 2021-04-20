@@ -1,15 +1,10 @@
 import React, { useEffect } from "react";
-import { Text, View, useWindowDimensions } from "react-native";
-import { PanGestureHandler } from "react-native-gesture-handler";
+import { View } from "react-native";
 import Animated, {
-  useWorkletCallback,
-  withSpring,
   withRepeat,
   withTiming,
-  withDelay,
   useSharedValue,
   useAnimatedStyle,
-  useAnimatedGestureHandler,
 } from "react-native-reanimated";
 import ESStyleSheet from "react-native-extended-stylesheet";
 
@@ -48,8 +43,15 @@ const Campfire = () => {
     };
   });
 
+  const fireLightAnimated = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: fireScale.value }, { translateY: -75 }],
+    };
+  });
+
   return (
     <View style={styles.container}>
+      <Animated.View style={[fireLightAnimated, styles.fireLight]} />
       <Animated.View style={[fire1Animated, styles.fire1]} />
       <Animated.View style={[fire2Animated, styles.fire2]} />
       <View style={styles.wood1} />
@@ -79,6 +81,15 @@ const styles = ESStyleSheet.create({
   fire2: {
     position: "absolute",
     backgroundColor: "$fireOrange",
+    width: 150,
+    height: 150,
+  },
+  fireLight: {
+    position: "absolute",
+    backgroundColor: "$black",
+    zIndex: 4,
+    opacity: 0.1,
+    borderRadius: 75,
     width: 150,
     height: 150,
   },

@@ -15,6 +15,7 @@ const themeInit = () => {
     $fireOrange: "#FDA263",
     $text: "#B3B3B3",
     $wood: "#5A3D3A",
+    $black: "black",
     $white: "white",
   });
 };
