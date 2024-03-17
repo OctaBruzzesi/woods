@@ -21,6 +21,12 @@ const Welcome = () => {
         >
           <Text style={styles.text}>Sit next to the Campfire</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Turtles')}
+          style={styles.button}
+        >
+          <Text style={styles.text}>Watch some Turtles swim</Text>
+        </TouchableOpacity>
       </View>
     </View>
   )
