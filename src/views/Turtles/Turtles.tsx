@@ -1,25 +1,23 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import Animated, {
   withSpring,
   withSequence,
   withTiming,
   withRepeat,
-  useSharedValue,
   useAnimatedStyle,
 } from 'react-native-reanimated'
-import ESStyleSheet from 'react-native-extended-stylesheet'
 import { LinearGradient } from 'expo-linear-gradient'
 
 import { getTurtleCircle } from './displayTurtles'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 const downIcon = require('../../../assets/down-arrow.png')
 const upIcon = require('../../../assets/up-arrow.png')
 
-const Turtle = ({ index, count }) => {
+const Turtle = ({ index, count, onToggle, selected }) => {
   const style = useAnimatedStyle(() => {
-    const { x, y } = getTurtleCircle(index, count)
+    const { x, y } = getTurtleCircle(index, count, selected)
 
     return {
       transform: [
@@ -44,11 +42,19 @@ const Turtle = ({ index, count }) => {
     }
   })
 
-  return <Animated.View style={[styles.turtle, style]} />
+  return (
+    <Animated.View style={[styles.turtle, style]}>
+      <TouchableOpacity
+        style={styles.turtleButton}
+        onPress={() => onToggle(index)}
+      />
+    </Animated.View>
+  )
 }
 
 export const Turtles = () => {
   const [count, setCount] = useState(1)
+  const [selected, setSelected] = useState(null)
 
   const turtles = useMemo(() => new Array(count).fill('turtle'), [count])
 
@@ -58,6 +64,16 @@ export const Turtles = () => {
 
   const up = () => {
     setCount((prevValue) => (prevValue === 10 ? prevValue : prevValue + 1))
+  }
+
+  const toggleTurtle = (index: number) => {
+    if (selected !== null) {
+      setSelected(null)
+
+      return
+    }
+
+    setSelected(index)
   }
 
   return (
@@ -83,7 +99,13 @@ export const Turtles = () => {
           </TouchableOpacity>
         </View>
         {turtles.map((value, index) => (
-          <Turtle key={`${value}-${index}`} index={index} count={count} />
+          <Turtle
+            key={`${value}-${index}`}
+            onToggle={toggleTurtle}
+            index={index}
+            count={count}
+            selected={selected}
+          />
         ))}
       </SafeAreaView>
       <LinearGradient
@@ -140,6 +162,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     justifyContent: 'center',
     backgroundColor: 'rgba(166, 219, 105, 0.9)',
+  },
+  turtleButton: {
+    height: '100%',
+    width: '100%',
   },
   valueText: {
     textAlign: 'center',
